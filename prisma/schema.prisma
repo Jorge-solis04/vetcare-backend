@@ -1,0 +1,125 @@
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL") 
+}
+
+// Este es el "generador". Le dice a Prisma que cree el
+// cliente de TypeScript para que puedas hacer consultas.
+generator client {
+  provider = "prisma-client-js"
+}
+
+// --- Modelos de Autenticación ---
+
+enum Role {
+  ADMIN
+  VET
+  RECEPTIONIST
+}
+
+model User {
+  id        String   @id @default(uuid()) // ID único universal
+  email     String   @unique // Email debe ser único
+  password  String   // ¡Guardaremos la contraseña hasheada aquí!
+  role      Role     @default(RECEPTIONIST) // Rol del usuario
+  name      String
+  isActive  Boolean  @default(true) // Para desactivar usuarios
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// --- Modelos del Negocio (VetCare) ---
+
+model Owner {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  email     String   @unique // El email del dueño también es único
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relación: Un Dueño (Owner) puede tener muchas Mascotas (Pet)
+  pets Pet[]
+}
+
+model Pet {
+  id        String   @id @default(uuid())
+  name      String
+  species   String   // Especie (ej. "Canino", "Felino")
+  breed     String   // Raza (ej. "Labrador", "Siames")
+  birthDate DateTime // Fecha de nacimiento
+
+  // --- Relaciones de la Mascota ---
+
+  // Relación con Dueño (Owner)
+  ownerId String // "Foreign Key" (Llave foránea)
+  owner   Owner  @relation(fields: [ownerId], references: [id])
+
+  // Relación con Citas, Vacunas y Tratamientos
+  appointments Appointment[]
+  vaccines     Vaccine[]
+  treatments   Treatment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Vet {
+  id        String   @id @default(uuid())
+  name      String
+  specialty String   // Especialidad (ej. "Cirugía", "General")
+  isActive  Boolean  @default(true) // Para veterinarios activos/inactivos
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relación: Un Veterinario (Vet) puede tener muchas Citas (Appointment)
+  appointments Appointment[]
+}
+
+model Appointment {
+  id     String   @id @default(uuid())
+  date   DateTime // Fecha y hora de la cita
+  status String   // ej. "Programada", "Cancelada", "Completada"
+
+  // --- Relaciones de la Cita ---
+
+  // Relación con Mascota (Pet)
+  petId String
+  pet   Pet    @relation(fields: [petId], references: [id])
+
+  // Relación con Veterinario (Vet)
+  vetId String
+  vet   Vet    @relation(fields: [vetId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Vaccine {
+  id          String   @id @default(uuid())
+  name        String   // ej. "Rabia", "Parvovirus"
+  appliedDate DateTime // Fecha de aplicación
+  nextDose    DateTime? // Fecha de próxima dosis (opcional, por eso el '?')
+
+  // --- Relación con Mascota ---
+  petId String
+  pet   Pet    @relation(fields: [petId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Treatment {
+  id          String    @id @default(uuid())
+  description String    @db.Text // @db.Text permite textos más largos
+  start       DateTime
+  end         DateTime? // Opcional, si es un tratamiento indefinido
+
+  // --- Relación con Mascota ---
+  petId String
+  pet   Pet    @relation(fields: [petId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
