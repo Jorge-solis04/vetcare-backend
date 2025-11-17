@@ -84,3 +84,9 @@ Para iniciar el servidor en modo de desarrollo (con recarga automática), usa:
 ```Bash
 npm run dev
 ```
+
+### 7. Documentacion de los endpoints 
+Una vez ejecutado el proyecto, puedes acceder a la documentacion de los endpoints con swagger
+```Ruta
+http://localhost:4000/api/docs/
+```
