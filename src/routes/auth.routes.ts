@@ -1,14 +1,20 @@
-import { Router } from 'express';
-import { registerHandler, loginHandler, getProfileHandler } from '../controllers/auth.controllers.js';
+import { Router } from "express";
+import {
+  registerHandler,
+  loginHandler,
+  getProfileHandler,
+} from "../controllers/auth.controllers.js";
 
-import { authMiddleware } from '../middleware/auth.middleware.js';
-import { get } from 'http';
+import { authMiddleware } from "../middleware/auth.middleware.js";
+import { Role } from "@prisma/client";
+import { authorizeRole } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
 //lo comentarios de las rutas, ayudan a la documentacion del endpoint con swagger
 
-router.post('/register', 
+router.post(
+  "/register",
   /* 
     #swagger.tags = ['Auth']
     #swagger.description = 'Registrar un nuevo usuario'
@@ -27,7 +33,8 @@ router.post('/register',
   registerHandler
 );
 
-router.post('/login', 
+router.post(
+  "/login",
   /* 
     #swagger.tags = ['Auth']
     #swagger.description = 'Iniciar sesión'
@@ -44,7 +51,8 @@ router.post('/login',
   loginHandler
 );
 
-router.get('/profile' /*
+router.get(
+  "/profile" /*
     #swagger.tags = ['Auth']
     #swagger.description = 'Obtener el perfil del usuario autenticado'
     #swagger.security = [{
@@ -64,9 +72,15 @@ router.get('/profile' /*
     #swagger.responses[401] = {
       description: 'No autorizado - Token inválido o no proporcionado'
     }
-  */, authMiddleware, 
-  
+  */,
+  authMiddleware,
+
   getProfileHandler
 );
+
+router.get(
+  "/admin-only", authMiddleware, authorizeRole([Role.ADMIN]), (req, res) => {
+    return res.status(200).json({ message: "Acceso concedido solo para administradores" });
+  }) 
 
 export default router;
