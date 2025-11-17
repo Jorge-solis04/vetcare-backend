@@ -56,7 +56,7 @@
                 },
                 "role": {
                   "type": "string",
-                  "example": "VET"
+                  "example": "ADMIN, VET, CLIENTE"
                 }
               }
             }
@@ -110,6 +110,63 @@
             "description": "Unauthorized"
           }
         }
+      }
+    },
+    "/api/auth/profile": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Obtener el perfil del usuario autenticado",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil obtenido exitosamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "usuario123"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "usuario@example.com"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Juan Pérez"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "VET"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado - Token inválido o no proporcionado"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   }

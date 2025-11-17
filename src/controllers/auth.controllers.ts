@@ -39,3 +39,8 @@ export const loginHandler = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getProfileHandler = async (req: Request, res: Response) => {
+
+  return res.status(200).json({ user: req.user });
+}

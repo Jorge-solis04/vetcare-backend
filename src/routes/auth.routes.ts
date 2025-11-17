@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { registerHandler, loginHandler } from '../controllers/auth.controllers.js';
+import { registerHandler, loginHandler, getProfileHandler } from '../controllers/auth.controllers.js';
+
+import { authMiddleware } from '../middleware/auth.middleware.js';
+import { get } from 'http';
 
 const router = Router();
 
@@ -39,6 +42,31 @@ router.post('/login',
     }
   */
   loginHandler
+);
+
+router.get('/profile' /*
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Obtener el perfil del usuario autenticado'
+    #swagger.security = [{
+      "bearerAuth": []
+    }]
+    #swagger.responses[200] = {
+      description: 'Perfil obtenido exitosamente',
+      schema: {
+        user: {
+          id: 'usuario123',
+          email: 'usuario@example.com',
+          name: 'Juan Pérez',
+          role: 'VET'
+        }
+      }
+    }
+    #swagger.responses[401] = {
+      description: 'No autorizado - Token inválido o no proporcionado'
+    }
+  */, authMiddleware, 
+  
+  getProfileHandler
 );
 
 export default router;
