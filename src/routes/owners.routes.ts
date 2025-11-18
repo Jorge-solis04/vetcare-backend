@@ -1,48 +1,65 @@
 import { Router } from 'express';
-import { Role } from '@prisma/client';
-import { authMiddleware as authenticateToken, authorizeRole } from '../middleware/auth.middleware';
-
-import {
-  createOwnerHandler,
-  getAllOwnersHandler,
-  getOwnerByIdHandler,
-  updateOwnerHandler,
-  deleteOwnerHandler,
+import { 
+  createOwnerHandler, 
+  getAllOwnersHandler, 
+  getOwnerByIdHandler, 
+  updateOwnerHandler, 
+  deleteOwnerHandler 
 } from '../controllers/owner.controller';
+import { authMiddleware, authorizeRole } from '../middleware/auth.middleware.js';
+import { Role } from '@prisma/client';
 
 const router = Router();
 
-router.post(
-  '/',
-  authenticateToken,
+router.post('/',
+  /* 
+    #swagger.tags = ['Owners']
+    #swagger.description = 'Crear un nuevo propietario'
+    #swagger.security = [{ "bearerAuth": [] }]
+  */
+  authMiddleware,
   authorizeRole([Role.ADMIN, Role.RECEPTIONIST]),
   createOwnerHandler
 );
 
-router.get(
-  '/',
-  authenticateToken,
-  authorizeRole([Role.ADMIN, Role.RECEPTIONIST, Role.VET]),
+router.get('/',
+  /* 
+    #swagger.tags = ['Owners']
+    #swagger.description = 'Obtener todos los propietarios'
+    #swagger.security = [{ "bearerAuth": [] }]
+  */
+  authMiddleware,
   getAllOwnersHandler
 );
 
-router.get(
-  '/:id',
-  authenticateToken,
-  authorizeRole([Role.ADMIN, Role.RECEPTIONIST, Role.VET]),
+router.get('/:id',
+  /* 
+    #swagger.tags = ['Owners']
+    #swagger.description = 'Obtener un propietario por ID'
+    #swagger.security = [{ "bearerAuth": [] }]
+  */
+  authMiddleware,
   getOwnerByIdHandler
 );
 
-router.put(
-  '/:id',
-  authenticateToken,
+router.put('/:id',
+  /* 
+    #swagger.tags = ['Owners']
+    #swagger.description = 'Actualizar un propietario'
+    #swagger.security = [{ "bearerAuth": [] }]
+  */
+  authMiddleware,
   authorizeRole([Role.ADMIN, Role.RECEPTIONIST]),
   updateOwnerHandler
 );
 
-router.delete(
-  '/:id',
-  authenticateToken,
+router.delete('/:id',
+  /* 
+    #swagger.tags = ['Owners']
+    #swagger.description = 'Eliminar un propietario'
+    #swagger.security = [{ "bearerAuth": [] }]
+  */
+  authMiddleware,
   authorizeRole([Role.ADMIN]),
   deleteOwnerHandler
 );
