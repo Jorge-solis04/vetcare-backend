@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes.js';
+import ownerRoutes from './routes/owners.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerOutput from './config/swagger-output.json' assert { type: 'json' };
 
@@ -18,6 +19,7 @@ app.get('/api/ok', (req, res) =>{
 })
 
 app.use('/api/auth', authRoutes)
+app.use('/api/owners', ownerRoutes);
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
