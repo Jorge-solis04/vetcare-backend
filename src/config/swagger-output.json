@@ -197,12 +197,17 @@
         "tags": [
           "Owners"
         ],
-        "description": "Crear un nuevo dueño",
+        "description": "Crear un nuevo propietario",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
-            "description": "Datos del dueño (owner)",
+            "description": "Datos del propietario",
             "required": true,
             "schema": {
               "type": "object",
@@ -213,11 +218,10 @@
                 },
                 "phone": {
                   "type": "string",
-                  "example": "5551234567"
+                  "example": "1234567890"
                 },
                 "email": {
                   "type": "string",
-                  "format": "email",
                   "example": "juan@example.com"
                 }
               }
@@ -226,97 +230,264 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Propietario creado exitosamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Error de validación"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "No autorizado"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Rol insuficiente"
           },
           "409": {
             "description": "Conflict"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "get": {
-        "description": "",
+        "tags": [
+          "Owners"
+        ],
+        "description": "Obtener todos los propietarios",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Lista de propietarios obtenida exitosamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "owner123"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Juan Pérez"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "juan@example.com"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00.000Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00.000Z"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
+            "description": "No autorizado"
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/owners/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Owners"
+        ],
+        "description": "Obtener un propietario por ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string",
+            "description": "ID del propietario"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
         "responses": {
-          "401": {
-            "description": "Unauthorized"
+          "200": {
+            "description": "Propietario encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "owner123"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Juan Pérez"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "1234567890"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "juan@example.com"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2024-01-01T00:00:00.000Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2024-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
-          "403": {
-            "description": "Forbidden"
+          "401": {
+            "description": "No autorizado"
+          },
+          "404": {
+            "description": "Propietario no encontrado"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Owners"
+        ],
+        "description": "Actualizar un propietario",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string",
+            "description": "ID del propietario"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos a actualizar (todos opcionales)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Juan Pérez"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "1234567890"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "juan@example.com"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Propietario actualizado exitosamente"
+          },
+          "400": {
+            "description": "Error de validación"
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "No autorizado"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Rol insuficiente"
+          },
+          "404": {
+            "description": "Propietario no encontrado"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Owners"
+        ],
+        "description": "Eliminar un propietario",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string",
+            "description": "ID del propietario"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
         "responses": {
+          "200": {
+            "description": "Propietario eliminado exitosamente"
+          },
           "401": {
-            "description": "Unauthorized"
+            "description": "No autorizado"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Rol insuficiente - Solo ADMIN"
+          },
+          "404": {
+            "description": "Propietario no encontrado"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   }
