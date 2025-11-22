@@ -489,6 +489,314 @@
           }
         ]
       }
+    },
+    "/api/pets/": {
+      "get": {
+        "tags": [
+          "Pets"
+        ],
+        "description": "Obtener todas las mascotas",
+        "responses": {
+          "200": {
+            "description": "Lista de mascotas obtenida exitosamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "pet123"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Firulais"
+                  },
+                  "species": {
+                    "type": "string",
+                    "example": "Perro"
+                  },
+                  "breed": {
+                    "type": "string",
+                    "example": "Labrador"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z"
+                  },
+                  "ownerId": {
+                    "type": "string",
+                    "example": "owner123"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00.000Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00.000Z"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Pets"
+        ],
+        "description": "Crear una nueva mascota",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos de la mascota",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Firulais"
+                },
+                "species": {
+                  "type": "string",
+                  "example": "Perro"
+                },
+                "breed": {
+                  "type": "string",
+                  "example": "Labrador"
+                },
+                "birthDate": {
+                  "type": "string",
+                  "example": "2020-01-01"
+                },
+                "ownerId": {
+                  "type": "string",
+                  "example": "owner123-uuid-format"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Mascota creada exitosamente"
+          },
+          "400": {
+            "description": "Error de validación o ownerId no existe"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Rol insuficiente"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/pets/{id}": {
+      "get": {
+        "tags": [
+          "Pets"
+        ],
+        "description": "Obtener una mascota por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID de la mascota"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mascota encontrada",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "pet123"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Firulais"
+                },
+                "species": {
+                  "type": "string",
+                  "example": "Perro"
+                },
+                "breed": {
+                  "type": "string",
+                  "example": "Labrador"
+                },
+                "birthDate": {
+                  "type": "string",
+                  "example": "2020-01-01T00:00:00.000Z"
+                },
+                "ownerId": {
+                  "type": "string",
+                  "example": "owner123"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2024-01-01T00:00:00.000Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2024-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "ID de mascota no proporcionado"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "404": {
+            "description": "Mascota no encontrada"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Pets"
+        ],
+        "description": "Actualizar una mascota",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID de la mascota"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos a actualizar (todos opcionales)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Firulais"
+                },
+                "species": {
+                  "type": "string",
+                  "example": "Perro"
+                },
+                "breed": {
+                  "type": "string",
+                  "example": "Labrador"
+                },
+                "birthDate": {
+                  "type": "string",
+                  "example": "2020-01-01"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mascota actualizada exitosamente"
+          },
+          "400": {
+            "description": "Error de validación o ID no proporcionado"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Rol insuficiente"
+          },
+          "404": {
+            "description": "Mascota no encontrada"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Pets"
+        ],
+        "description": "Eliminar una mascota",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID de la mascota"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Mascota eliminada exitosamente"
+          },
+          "400": {
+            "description": "ID de mascota no proporcionado"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Rol insuficiente - Solo ADMIN"
+          },
+          "404": {
+            "description": "Mascota no encontrada"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   }
 }
