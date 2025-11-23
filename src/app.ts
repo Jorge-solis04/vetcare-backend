@@ -7,6 +7,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerOutput from './config/swagger-output.json' assert { type: 'json' };
 import petRoutes from './routes/pet.routes.js';
 import treatmentRoutes from './routes/treatment.routes.js';
+import vetRoutes from './routes/vet.routes.js';
+
 dotenv.config();
 
 const app = express();
@@ -24,6 +26,7 @@ app.use('/api/owners', ownerRoutes);
 app.use('/api/pets', petRoutes);
 app.use('/api/treatments', treatmentRoutes);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
+app.use('/api/vets', vetRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
