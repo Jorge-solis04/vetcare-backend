@@ -77,6 +77,13 @@ model Vet {
   appointments Appointment[]
 }
 
+enum AppointmentStatus {
+  SCHEDULED // Programada
+  COMPLETED // Completada
+  CANCELLED // Cancelada
+  NO_SHOW   // No asistió
+}
+
 model Appointment {
   id     String   @id @default(uuid())
   date   DateTime // Fecha y hora de la cita
