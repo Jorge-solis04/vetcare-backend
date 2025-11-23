@@ -6,6 +6,7 @@ import ownerRoutes from './routes/owners.routes.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerOutput from './config/swagger-output.json' assert { type: 'json' };
 import petRoutes from './routes/pet.routes.js';
+import treatmentRoutes from './routes/treatment.routes.js';
 dotenv.config();
 
 const app = express();
@@ -21,6 +22,7 @@ app.get('/api/ok', (req, res) =>{
 app.use('/api/auth', authRoutes)
 app.use('/api/owners', ownerRoutes);
 app.use('/api/pets', petRoutes);
+app.use('/api/treatments', treatmentRoutes);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
 app.listen(PORT, () => {

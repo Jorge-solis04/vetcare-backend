@@ -797,6 +797,228 @@
           }
         ]
       }
+    },
+    "/api/treatments/pet/{petId}": {
+      "get": {
+        "tags": [
+          "Treatments"
+        ],
+        "description": "Obtener todos los tratamientos de una mascota",
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID de la mascota"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tratamientos obtenidos exitosamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "treatment123"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Tratamiento antibiótico por infección"
+                  },
+                  "start": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00.000Z"
+                  },
+                  "end": {
+                    "type": "string",
+                    "example": "2024-01-15T00:00:00.000Z"
+                  },
+                  "petId": {
+                    "type": "string",
+                    "example": "pet123"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00.000Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00.000Z"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "ID de mascota no proporcionado"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Rol insuficiente"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/treatments/": {
+      "post": {
+        "tags": [
+          "Treatments"
+        ],
+        "description": "Crear un nuevo tratamiento",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos del tratamiento",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "Tratamiento antibiótico por infección"
+                },
+                "start": {
+                  "type": "string",
+                  "example": "2024-01-01"
+                },
+                "end": {
+                  "type": "string",
+                  "example": "2024-01-15"
+                },
+                "petId": {
+                  "type": "string",
+                  "example": "pet123-uuid-format"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Tratamiento creado exitosamente"
+          },
+          "400": {
+            "description": "Error de validación - La fecha de finalización no puede ser anterior a la fecha de inicio"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Rol insuficiente - Solo ADMIN y VET"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/treatments/{id}": {
+      "put": {
+        "tags": [
+          "Treatments"
+        ],
+        "description": "Actualizar un tratamiento",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID del tratamiento"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos a actualizar",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tratamiento actualizado exitosamente"
+          },
+          "400": {
+            "description": "ID de tratamiento no proporcionado"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Rol insuficiente"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Treatments"
+        ],
+        "description": "Eliminar un tratamiento",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID del tratamiento"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tratamiento eliminado exitosamente"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "ID de tratamiento no proporcionado"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Rol insuficiente"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   }
 }
