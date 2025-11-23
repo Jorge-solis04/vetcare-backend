@@ -1052,6 +1052,65 @@
         "responses": {
           "200": {
             "description": "Citas obtenidas exitosamente",
+    "/api/vets/": {
+      "post": {
+        "tags": [
+          "Vets"
+        ],
+        "description": "Crear un nuevo veterinario",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos del veterinario",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Dr. Carlos García"
+                },
+                "specialty": {
+                  "type": "string",
+                  "example": "Cirugía"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Veterinario creado exitosamente"
+          },
+          "400": {
+            "description": "Error de validación"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Rol insuficiente - Solo ADMIN"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Vets"
+        ],
+        "description": "Obtener todos los veterinarios",
+        "responses": {
+          "200": {
+            "description": "Lista de veterinarios obtenida exitosamente",
             "schema": {
               "type": "array",
               "items": {
@@ -1076,6 +1135,19 @@
                   "vetId": {
                     "type": "string",
                     "example": "vet123"
+                    "example": "vet123"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Dr. Carlos García"
+                  },
+                  "specialty": {
+                    "type": "string",
+                    "example": "Cirugía"
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "example": true
                   },
                   "createdAt": {
                     "type": "string",
@@ -1094,6 +1166,9 @@
           },
           "401": {
             "description": "No autorizado"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1145,12 +1220,74 @@
           },
           "400": {
             "description": "Error de validación - petId o vetId inválidos"
+      }
+    },
+    "/api/vets/{id}": {
+      "get": {
+        "tags": [
+          "Vets"
+        ],
+        "description": "Obtener un veterinario por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID del veterinario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Veterinario encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "vet123"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Dr. Carlos García"
+                },
+                "specialty": {
+                  "type": "string",
+                  "example": "Cirugía"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2024-01-01T00:00:00.000Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2024-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "No autorizado"
           },
           "403": {
             "description": "Rol insuficiente - Solo ADMIN y RECEPTIONIST"
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Veterinario no encontrado"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "security": [
@@ -1166,6 +1303,12 @@
           "Appointments"
         ],
         "description": "Actualizar una cita (reagendar o cambiar estado)",
+      },
+      "put": {
+        "tags": [
+          "Vets"
+        ],
+        "description": "Actualizar un veterinario",
         "parameters": [
           {
             "name": "id",
@@ -1173,6 +1316,7 @@
             "required": true,
             "type": "string",
             "description": "ID de la cita"
+            "description": "ID del veterinario"
           },
           {
             "name": "body",
@@ -1189,6 +1333,17 @@
                 "status": {
                   "type": "string",
                   "example": "COMPLETED"
+                "name": {
+                  "type": "string",
+                  "example": "Dr. Carlos García"
+                },
+                "specialty": {
+                  "type": "string",
+                  "example": "Cirugía Veterinaria"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
                 }
               }
             }
@@ -1200,6 +1355,10 @@
           },
           "400": {
             "description": "Error de validación o ID no proporcionado"
+            "description": "Veterinario actualizado exitosamente"
+          },
+          "400": {
+            "description": "Error de validación"
           },
           "401": {
             "description": "No autorizado"
@@ -1212,6 +1371,10 @@
           },
           "500": {
             "description": "Internal Server Error"
+            "description": "Rol insuficiente - Solo ADMIN"
+          },
+          "404": {
+            "description": "Veterinario no encontrado"
           }
         },
         "security": [
@@ -1225,6 +1388,9 @@
           "Appointments"
         ],
         "description": "Cancelar/eliminar una cita definitivamente",
+          "Vets"
+        ],
+        "description": "Eliminar un veterinario",
         "parameters": [
           {
             "name": "id",
@@ -1240,6 +1406,15 @@
           },
           "400": {
             "description": "ID de cita no proporcionado"
+            "description": "ID del veterinario"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Veterinario eliminado exitosamente"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "No autorizado"
@@ -1249,6 +1424,10 @@
           },
           "404": {
             "description": "Cita no encontrada"
+            "description": "Rol insuficiente - Solo ADMIN"
+          },
+          "404": {
+            "description": "Veterinario no encontrado"
           },
           "500": {
             "description": "Internal Server Error"
