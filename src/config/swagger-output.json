@@ -1020,6 +1020,38 @@
         ]
       }
     },
+    "/api/appointments/": {
+      "get": {
+        "tags": [
+          "Appointments"
+        ],
+        "description": "Obtener todas las citas con filtros opcionales",
+        "parameters": [
+          {
+            "name": "vetId",
+            "in": "query",
+            "description": "ID del veterinario para filtrar",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "petId",
+            "in": "query",
+            "description": "ID de la mascota para filtrar",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Fecha para filtrar (formato: YYYY-MM-DD)",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Citas obtenidas exitosamente",
     "/api/vets/": {
       "post": {
         "tags": [
@@ -1086,6 +1118,23 @@
                 "properties": {
                   "id": {
                     "type": "string",
+                    "example": "appointment123"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "2024-01-15T10:00:00.000Z"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "SCHEDULED"
+                  },
+                  "petId": {
+                    "type": "string",
+                    "example": "pet123"
+                  },
+                  "vetId": {
+                    "type": "string",
+                    "example": "vet123"
                     "example": "vet123"
                   },
                   "name": {
@@ -1130,6 +1179,47 @@
             "bearerAuth": []
           }
         ]
+      },
+      "post": {
+        "tags": [
+          "Appointments"
+        ],
+        "description": "Crear una nueva cita",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos de la cita",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "example": "2024-01-15T10:00:00.000Z"
+                },
+                "petId": {
+                  "type": "string",
+                  "example": "pet123-uuid-format"
+                },
+                "vetId": {
+                  "type": "string",
+                  "example": "vet123-uuid-format"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "SCHEDULED"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cita creada exitosamente"
+          },
+          "400": {
+            "description": "Error de validación - petId o vetId inválidos"
       }
     },
     "/api/vets/{id}": {
@@ -1190,6 +1280,7 @@
             "description": "No autorizado"
           },
           "403": {
+            "description": "Rol insuficiente - Solo ADMIN y RECEPTIONIST"
             "description": "Forbidden"
           },
           "404": {
@@ -1204,6 +1295,14 @@
             "bearerAuth": []
           }
         ]
+      }
+    },
+    "/api/appointments/{id}": {
+      "put": {
+        "tags": [
+          "Appointments"
+        ],
+        "description": "Actualizar una cita (reagendar o cambiar estado)",
       },
       "put": {
         "tags": [
@@ -1216,6 +1315,7 @@
             "in": "path",
             "required": true,
             "type": "string",
+            "description": "ID de la cita"
             "description": "ID del veterinario"
           },
           {
@@ -1226,6 +1326,13 @@
             "schema": {
               "type": "object",
               "properties": {
+                "date": {
+                  "type": "string",
+                  "example": "2024-01-15T14:00:00.000Z"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "COMPLETED"
                 "name": {
                   "type": "string",
                   "example": "Dr. Carlos García"
@@ -1244,6 +1351,10 @@
         ],
         "responses": {
           "200": {
+            "description": "Cita actualizada exitosamente"
+          },
+          "400": {
+            "description": "Error de validación o ID no proporcionado"
             "description": "Veterinario actualizado exitosamente"
           },
           "400": {
@@ -1253,6 +1364,13 @@
             "description": "No autorizado"
           },
           "403": {
+            "description": "Rol insuficiente - ADMIN, RECEPTIONIST o VET"
+          },
+          "404": {
+            "description": "Cita no encontrada"
+          },
+          "500": {
+            "description": "Internal Server Error"
             "description": "Rol insuficiente - Solo ADMIN"
           },
           "404": {
@@ -1267,6 +1385,9 @@
       },
       "delete": {
         "tags": [
+          "Appointments"
+        ],
+        "description": "Cancelar/eliminar una cita definitivamente",
           "Vets"
         ],
         "description": "Eliminar un veterinario",
@@ -1276,6 +1397,15 @@
             "in": "path",
             "required": true,
             "type": "string",
+            "description": "ID de la cita"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cita eliminada exitosamente"
+          },
+          "400": {
+            "description": "ID de cita no proporcionado"
             "description": "ID del veterinario"
           }
         ],
@@ -1290,6 +1420,10 @@
             "description": "No autorizado"
           },
           "403": {
+            "description": "Rol insuficiente - Solo ADMIN y RECEPTIONIST"
+          },
+          "404": {
+            "description": "Cita no encontrada"
             "description": "Rol insuficiente - Solo ADMIN"
           },
           "404": {
