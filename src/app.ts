@@ -10,6 +10,8 @@ import treatmentRoutes from './routes/treatment.routes.js';
 
 import appointmentRoutes from './routes/appointment.routes.js';
 import vetRoutes from './routes/vet.routes.js';
+import vaccineRoutes from './routes/vaccine.routes.js';
+
 dotenv.config();
 
 const app = express();
@@ -29,6 +31,7 @@ app.use('/api/treatments', treatmentRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 app.use('/api/vets', vetRoutes);
+app.use('/api/vaccines', vaccineRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
