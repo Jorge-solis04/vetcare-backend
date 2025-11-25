@@ -31,8 +31,8 @@ export const loginHandler = async (req: Request, res: Response) => {
   try {
     const validatedData = loginSchema.parse(req.body);
 
-    const { token } = await loginUser(validatedData);
-    return res.status(200).json({ token, message: "Login exitoso" });
+    const { token, user } = await loginUser(validatedData);
+    return res.status(200).json({ token, user, message: "Login exitoso" });
   } catch (e: any) {
     return res.status(401).json({
       message: e.message,

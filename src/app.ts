@@ -11,13 +11,14 @@ import treatmentRoutes from './routes/treatment.routes.js';
 import appointmentRoutes from './routes/appointment.routes.js';
 import vetRoutes from './routes/vet.routes.js';
 dotenv.config();
+import morgan from 'morgan';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
-
+app.use(morgan('dev')); 
 app.get('/api/ok', (req, res) =>{
     res.status(200).json({ message: 'veterinaria en funcionamiento' });
 })

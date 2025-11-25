@@ -74,9 +74,23 @@ export const deletePetHandler = async (req: Request, res: Response) => {
     await petService.deletePet(id);
     return res.status(204).send(); 
   } catch (error: any) {
+    // Log completo del error para debug
+    console.error('Error al eliminar mascota:', error);
+    
     if (error.code === 'P2025') {
       return res.status(404).json({ message: 'Mascota no encontrada' });
     }
-    return res.status(500).json({ message: 'Error al eliminar mascota' });
+    
+    // Error de constraint (probablemente tiene tratamientos o citas relacionadas)
+    if (error.code === 'P2003') {
+      return res.status(400).json({ 
+        message: 'No se puede eliminar la mascota porque tiene registros relacionados (tratamientos o citas)' 
+      });
+    }
+    
+    return res.status(500).json({ 
+      message: 'Error al eliminar mascota',
+      error: error.message // Enviar el mensaje de error al cliente
+    });
   }
 };
