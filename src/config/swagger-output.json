@@ -11,6 +11,10 @@
     {
       "name": "Auth",
       "description": "Endpoints de autenticación"
+    },
+    {
+      "name": "Stats",
+      "description": "Endpoints del dashboard y estadísticas"
     }
   ],
   "schemes": [
@@ -1835,6 +1839,69 @@
           },
           "404": {
             "description": "Vacuna no encontrada"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/stats/dashboard": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "description": "Obtener estadísticas del dashboard",
+        "responses": {
+          "200": {
+            "description": "Estadísticas del dashboard",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "appointmentsToday": {
+                  "type": "number",
+                  "example": 5
+                },
+                "newPetsCount": {
+                  "type": "number",
+                  "example": 12
+                },
+                "expiringVaccines": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "vaccine123"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Vacuna A"
+                      },
+                      "nextDose": {
+                        "type": "string",
+                        "example": "2025-12-01T00:00:00.000Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal Server Error"
