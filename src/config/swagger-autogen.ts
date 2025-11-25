@@ -10,6 +10,7 @@ const doc = {
   schemes: ['http'],
   tags: [
     { name: 'Auth', description: 'Endpoints de autenticación' },
+    { name: 'Stats', description: 'Endpoints del dashboard y estadísticas' },
   ],
 };
 
