@@ -3,7 +3,7 @@ import {
   registerHandler,
   loginHandler,
   getProfileHandler,
-} from "../controllers/auth.controllers.js";
+} from "../controllers/auth.controller.js";
 
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { Role } from "@prisma/client";

@@ -29,7 +29,7 @@ export const loginUser = async (data: {
   const user = await prisma.user.findUnique({
     where: { email: data.email },
   });
-
+  
   if (!user) {
     throw new Error("No se encontró el usuario");
   }
@@ -52,5 +52,5 @@ export const loginUser = async (data: {
     { expiresIn: "1h" }
   );
 
-  return { token };
+  return { token, user: { id: user.id, name: user.name, email: user.email, role: user.role } };
 };
