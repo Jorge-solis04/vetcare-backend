@@ -1034,70 +1034,22 @@
           {
             "name": "vetId",
             "in": "query",
-            "description": "ID del veterinario para filtrar",
-            "required": false,
             "type": "string"
           },
           {
             "name": "petId",
             "in": "query",
-            "description": "ID de la mascota para filtrar",
-            "required": false,
             "type": "string"
           },
           {
             "name": "date",
             "in": "query",
-            "description": "Fecha para filtrar (formato: YYYY-MM-DD)",
-            "required": false,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Citas obtenidas exitosamente",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "example": "appointment123"
-                  },
-                  "date": {
-                    "type": "string",
-                    "example": "2024-01-15T10:00:00.000Z"
-                  },
-                  "status": {
-                    "type": "string",
-                    "example": "SCHEDULED"
-                  },
-                  "petId": {
-                    "type": "string",
-                    "example": "pet123"
-                  },
-                  "vetId": {
-                    "type": "string",
-                    "example": "vet123"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "example": "2024-01-01T00:00:00.000Z"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "example": "2024-01-01T00:00:00.000Z"
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "401": {
-            "description": "No autorizado"
+            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1114,47 +1066,18 @@
           "Appointments"
         ],
         "description": "Crear una nueva cita",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Datos de la cita",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "date": {
-                  "type": "string",
-                  "example": "2024-01-15T10:00:00.000Z"
-                },
-                "petId": {
-                  "type": "string",
-                  "example": "pet123-uuid-format"
-                },
-                "vetId": {
-                  "type": "string",
-                  "example": "vet123-uuid-format"
-                },
-                "status": {
-                  "type": "string",
-                  "example": "SCHEDULED"
-                }
-              }
-            }
-          }
-        ],
         "responses": {
           "201": {
-            "description": "Cita creada exitosamente"
+            "description": "Created"
           },
           "400": {
-            "description": "Error de validación - petId o vetId inválidos"
+            "description": "Bad Request"
           },
           "401": {
-            "description": "No autorizado"
+            "description": "Unauthorized"
           },
           "403": {
-            "description": "Rol insuficiente - Solo ADMIN y RECEPTIONIST"
+            "description": "Forbidden"
           }
         },
         "security": [
@@ -1165,11 +1088,11 @@
       }
     },
     "/api/appointments/{id}": {
-      "put": {
+      "get": {
         "tags": [
           "Appointments"
         ],
-        "description": "Actualizar una cita (reagendar o cambiar estado)",
+        "description": "Obtener una cita específica por ID",
         "parameters": [
           {
             "name": "id",
@@ -1177,42 +1100,56 @@
             "required": true,
             "type": "string",
             "description": "ID de la cita"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Datos a actualizar (todos opcionales)",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "date": {
-                  "type": "string",
-                  "example": "2024-01-15T14:00:00.000Z"
-                },
-                "status": {
-                  "type": "string",
-                  "example": "COMPLETED"
-                }
-              }
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Cita actualizada exitosamente"
+            "description": "Cita encontrada"
           },
           "400": {
-            "description": "Error de validación o ID no proporcionado"
+            "description": "Bad Request"
           },
           "401": {
             "description": "No autorizado"
           },
-          "403": {
-            "description": "Rol insuficiente - ADMIN, RECEPTIONIST o VET"
-          },
           "404": {
             "description": "Cita no encontrada"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Appointments"
+        ],
+        "description": "Actualizar una cita",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1228,31 +1165,27 @@
         "tags": [
           "Appointments"
         ],
-        "description": "Cancelar/eliminar una cita definitivamente",
+        "description": "Cancelar/eliminar una cita",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "ID de la cita"
+            "type": "string"
           }
         ],
         "responses": {
           "204": {
-            "description": "Cita eliminada exitosamente"
+            "description": "No Content"
           },
           "400": {
-            "description": "ID de cita no proporcionado"
+            "description": "Bad Request"
           },
           "401": {
-            "description": "No autorizado"
+            "description": "Unauthorized"
           },
           "403": {
-            "description": "Rol insuficiente - Solo ADMIN y RECEPTIONIST"
-          },
-          "404": {
-            "description": "Cita no encontrada"
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal Server Error"

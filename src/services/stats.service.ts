@@ -15,13 +15,38 @@ export const getDashboardStats = async () => {
 
   const [appointmentsToday, newPetsCount, expiringVaccines] = await Promise.all([
     
-    prisma.appointment.count({
+    prisma.appointment.findMany({
       where: {
         date: {
           gte: startOfDay,
           lte: endOfDay,
         },
-
+      },
+      include: {
+        pet: {
+          select: {
+            id: true,
+            name: true,
+            species: true,
+            breed: true,
+            owner: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              }
+            }
+          },
+        },
+        vet: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        date: 'asc',
       },
     }),
 
@@ -51,6 +76,7 @@ export const getDashboardStats = async () => {
 
   return {
     appointmentsToday,
+    appointmentsTodayCount: appointmentsToday.length,
     newPetsCount,
     expiringVaccines,
   };

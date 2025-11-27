@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import * as apptService from "../services/appointment.service";
+import * as apptService from "../services/appointment.service.js";
 import { z } from 'zod';
 import { AppointmentStatus } from "@prisma/client";
 
@@ -17,15 +17,46 @@ export const updateAppointmentSchema = z.object({
 
 export const getAppointmentsHandler = async (req: Request, res: Response) => {
   try {
-    const filters = {
-      vetId: req.query.vetId as string,
-      petId: req.query.petId as string,
-      date: req.query.date as string,
-    };
-    const appointments = await apptService.getAppointments(filters);
+    const { vetId, petId, date } = req.query;
+
+    const appointments = await apptService.getAppointments({
+      vetId: vetId as string,
+      petId: petId as string,
+      date: date as string,
+    });
+
+    if (appointments.length === 0) {
+      return res.status(200).json({
+        message: 'No hay citas para los filtros aplicados',
+        data: []
+      });
+    }
+
     return res.status(200).json(appointments);
-  } catch (error: any) {
-    return res.status(500).json({ message: "Error al obtener citas" });
+  } catch (error) {
+    console.error('Error al obtener citas:', error);
+    return res.status(500).json({ message: 'Error al obtener las citas' });
+  }
+};
+
+export const getAppointmentByIdHandler = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({ message: 'ID de cita es requerido' });
+    }
+
+    const appointment = await apptService.getAppointmentById(id);
+    
+    if (!appointment) {
+      return res.status(404).json({ message: 'Cita no encontrada' });
+    }
+    
+    return res.status(200).json(appointment);
+  } catch (error) {
+    console.error('Error al obtener cita:', error);
+    return res.status(500).json({ message: 'Error al obtener la cita' });
   }
 };
 

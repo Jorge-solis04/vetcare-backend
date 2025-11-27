@@ -13,5 +13,5 @@ export const updatePetSchema = z.object({
   species: z.string().optional(),
   breed: z.string().optional(),
   birthDate: z.coerce.date().optional(),
-
+  ownerId: z.string().uuid('Debe ser un ID de dueño válido').optional(),
 });
