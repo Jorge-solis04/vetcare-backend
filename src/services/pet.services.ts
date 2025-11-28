@@ -19,7 +19,13 @@ export const getPetById = async (id: string) => {
     where: { id },
     include: {
       owner: true, 
-      
+      appointments: {
+        orderBy: { date: 'desc' }, // Opcional: Ordenar citas por fecha (más reciente primero)
+        take: 10 // Opcional: Limitar a las últimas 10
+      },
+      treatments: {
+        orderBy: { start: 'desc' } // Opcional: Ordenar tratamientos por fecha
+      }
     },
   });
 };
