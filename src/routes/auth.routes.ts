@@ -11,8 +11,6 @@ import { authorizeRole } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-//lo comentarios de las rutas, ayudan a la documentacion del endpoint con swagger
-
 router.post(
   "/register",
   /* 
@@ -26,8 +24,11 @@ router.post(
         email: 'usuario@example.com',
         password: 'password123',
         name: 'Juan Pérez',
-        role: 'ADMIN, VET, CLIENTE'
+        role: 'ADMIN'
       }
+    }
+    #swagger.responses[201] = {
+      description: 'Usuario registrado exitosamente'
     }
   */
   registerHandler
@@ -47,14 +48,18 @@ router.post(
         password: 'password123'
       }
     }
+    #swagger.responses[200] = {
+      description: 'Login exitoso'
+    }
   */
   loginHandler
 );
 
 router.get(
-  "/profile" /*
+  "/profile",
+  /* 
     #swagger.tags = ['Auth']
-    #swagger.description = 'Obtener el perfil del usuario autenticado'
+    #swagger.description = 'Obtener el perfil del usuario autenticado <br><b>Roles permitidos:</b> Todos los usuarios autenticados'
     #swagger.security = [{
       "bearerAuth": []
     }]
@@ -72,15 +77,34 @@ router.get(
     #swagger.responses[401] = {
       description: 'No autorizado - Token inválido o no proporcionado'
     }
-  */,
+  */
   authMiddleware,
-
   getProfileHandler
 );
 
 router.get(
-  "/admin-only", authMiddleware, authorizeRole([Role.ADMIN]), (req, res) => {
+  "/admin-only",
+  /* 
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Endpoint de prueba para administradores <br><b>Roles permitidos:</b> ADMIN'
+    #swagger.security = [{
+      "bearerAuth": []
+    }]
+    #swagger.responses[200] = {
+      description: 'Acceso concedido'
+    }
+    #swagger.responses[401] = {
+      description: 'No autorizado'
+    }
+    #swagger.responses[403] = {
+      description: 'Acceso denegado - Rol insuficiente'
+    }
+  */
+  authMiddleware,
+  authorizeRole([Role.ADMIN]),
+  (req, res) => {
     return res.status(200).json({ message: "Acceso concedido solo para administradores" });
-  }) 
+  }
+);
 
 export default router;

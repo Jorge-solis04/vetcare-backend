@@ -17,7 +17,7 @@ router.use(authMiddleware);
 router.get('/',
   /* 
     #swagger.tags = ['Pets']
-    #swagger.description = 'Obtener todas las mascotas'
+    #swagger.description = 'Obtener todas las mascotas <br><b>Roles permitidos:</b> Todos los usuarios autenticados'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.responses[200] = {
       description: 'Lista de mascotas obtenida exitosamente',
@@ -42,7 +42,7 @@ router.get('/',
 router.get('/:id',
   /* 
     #swagger.tags = ['Pets']
-    #swagger.description = 'Obtener una mascota por ID'
+    #swagger.description = 'Obtener una mascota por ID <br><b>Roles permitidos:</b> Todos los usuarios autenticados'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -79,7 +79,7 @@ router.get('/:id',
 router.post('/',
   /* 
     #swagger.tags = ['Pets']
-    #swagger.description = 'Crear una nueva mascota'
+    #swagger.description = 'Crear una nueva mascota <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['body'] = {
       in: 'body',
@@ -113,7 +113,7 @@ router.post('/',
 router.put('/:id',
   /* 
     #swagger.tags = ['Pets']
-    #swagger.description = 'Actualizar una mascota'
+    #swagger.description = 'Actualizar una mascota <br><b>Roles permitidos:</b> ADMIN, VET, RECEPTIONIST'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -129,7 +129,8 @@ router.put('/:id',
         name: 'Firulais',
         species: 'Perro',
         breed: 'Labrador',
-        birthDate: '2020-01-01'
+        birthDate: '2020-01-01',
+        ownerId: 'owner123-uuid-format'
       }
     }
     #swagger.responses[200] = {
@@ -155,7 +156,7 @@ router.put('/:id',
 router.delete('/:id',
   /* 
     #swagger.tags = ['Pets']
-    #swagger.description = 'Eliminar una mascota'
+    #swagger.description = 'Eliminar una mascota <br><b>Roles permitidos:</b> ADMIN'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -167,7 +168,7 @@ router.delete('/:id',
       description: 'Mascota eliminada exitosamente'
     }
     #swagger.responses[400] = {
-      description: 'ID de mascota no proporcionado'
+      description: 'ID de mascota no proporcionado o tiene registros relacionados'
     }
     #swagger.responses[404] = {
       description: 'Mascota no encontrada'

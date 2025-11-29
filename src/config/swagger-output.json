@@ -60,7 +60,7 @@
                 },
                 "role": {
                   "type": "string",
-                  "example": "ADMIN, VET, CLIENTE"
+                  "example": "ADMIN"
                 }
               }
             }
@@ -68,7 +68,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Usuario registrado exitosamente"
           },
           "400": {
             "description": "Bad Request"
@@ -108,7 +108,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Login exitoso"
           },
           "401": {
             "description": "Unauthorized"
@@ -121,7 +121,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "Obtener el perfil del usuario autenticado",
+        "description": "Obtener el perfil del usuario autenticado <br><b>Roles permitidos:</b> Todos los usuarios autenticados",
         "parameters": [
           {
             "name": "authorization",
@@ -175,7 +175,10 @@
     },
     "/api/auth/admin-only": {
       "get": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Endpoint de prueba para administradores <br><b>Roles permitidos:</b> ADMIN",
         "parameters": [
           {
             "name": "authorization",
@@ -185,15 +188,20 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Acceso concedido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "No autorizado"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Acceso denegado - Rol insuficiente"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/owners/": {
@@ -201,7 +209,7 @@
         "tags": [
           "Owners"
         ],
-        "description": "Crear un nuevo propietario",
+        "description": "Crear un nuevo propietario <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST",
         "parameters": [
           {
             "name": "authorization",
@@ -259,7 +267,7 @@
         "tags": [
           "Owners"
         ],
-        "description": "Obtener todos los propietarios",
+        "description": "Obtener todos los propietarios <br><b>Roles permitidos:</b> Todos los usuarios autenticados",
         "parameters": [
           {
             "name": "authorization",
@@ -325,7 +333,7 @@
         "tags": [
           "Owners"
         ],
-        "description": "Obtener un propietario por ID",
+        "description": "Obtener un propietario por ID <br><b>Roles permitidos:</b> Todos los usuarios autenticados",
         "parameters": [
           {
             "name": "id",
@@ -393,7 +401,7 @@
         "tags": [
           "Owners"
         ],
-        "description": "Actualizar un propietario",
+        "description": "Actualizar un propietario <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST",
         "parameters": [
           {
             "name": "id",
@@ -458,7 +466,7 @@
         "tags": [
           "Owners"
         ],
-        "description": "Eliminar un propietario",
+        "description": "Eliminar un propietario <br><b>Roles permitidos:</b> ADMIN",
         "parameters": [
           {
             "name": "id",
@@ -499,7 +507,7 @@
         "tags": [
           "Pets"
         ],
-        "description": "Obtener todas las mascotas",
+        "description": "Obtener todas las mascotas <br><b>Roles permitidos:</b> Todos los usuarios autenticados",
         "responses": {
           "200": {
             "description": "Lista de mascotas obtenida exitosamente",
@@ -564,7 +572,7 @@
         "tags": [
           "Pets"
         ],
-        "description": "Crear una nueva mascota",
+        "description": "Crear una nueva mascota <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST",
         "parameters": [
           {
             "name": "body",
@@ -624,7 +632,7 @@
         "tags": [
           "Pets"
         ],
-        "description": "Obtener una mascota por ID",
+        "description": "Obtener una mascota por ID <br><b>Roles permitidos:</b> Todos los usuarios autenticados",
         "parameters": [
           {
             "name": "id",
@@ -701,7 +709,7 @@
         "tags": [
           "Pets"
         ],
-        "description": "Actualizar una mascota",
+        "description": "Actualizar una mascota <br><b>Roles permitidos:</b> ADMIN, VET, RECEPTIONIST",
         "parameters": [
           {
             "name": "id",
@@ -733,6 +741,10 @@
                 "birthDate": {
                   "type": "string",
                   "example": "2020-01-01"
+                },
+                "ownerId": {
+                  "type": "string",
+                  "example": "owner123-uuid-format"
                 }
               }
             }
@@ -765,7 +777,7 @@
         "tags": [
           "Pets"
         ],
-        "description": "Eliminar una mascota",
+        "description": "Eliminar una mascota <br><b>Roles permitidos:</b> ADMIN",
         "parameters": [
           {
             "name": "id",
@@ -780,7 +792,7 @@
             "description": "Mascota eliminada exitosamente"
           },
           "400": {
-            "description": "ID de mascota no proporcionado"
+            "description": "ID de mascota no proporcionado o tiene registros relacionados"
           },
           "401": {
             "description": "No autorizado"
@@ -807,7 +819,7 @@
         "tags": [
           "Treatments"
         ],
-        "description": "Obtener todos los tratamientos de una mascota",
+        "description": "Obtener todos los tratamientos de una mascota <br><b>Roles permitidos:</b> ADMIN, VET, RECEPTIONIST",
         "parameters": [
           {
             "name": "petId",
@@ -885,7 +897,7 @@
         "tags": [
           "Treatments"
         ],
-        "description": "Crear un nuevo tratamiento",
+        "description": "Crear un nuevo tratamiento <br><b>Roles permitidos:</b> ADMIN, VET",
         "parameters": [
           {
             "name": "body",
@@ -941,7 +953,7 @@
         "tags": [
           "Treatments"
         ],
-        "description": "Actualizar un tratamiento",
+        "description": "Actualizar un tratamiento <br><b>Roles permitidos:</b> ADMIN, VET",
         "parameters": [
           {
             "name": "id",
@@ -953,10 +965,24 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Datos a actualizar",
+            "description": "Datos a actualizar (todos opcionales)",
+            "required": true,
             "schema": {
               "type": "object",
-              "properties": {}
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "Tratamiento antibiótico por infección"
+                },
+                "start": {
+                  "type": "string",
+                  "example": "2024-01-01"
+                },
+                "end": {
+                  "type": "string",
+                  "example": "2024-01-15"
+                }
+              }
             }
           }
         ],
@@ -965,13 +991,16 @@
             "description": "Tratamiento actualizado exitosamente"
           },
           "400": {
-            "description": "ID de tratamiento no proporcionado"
+            "description": "Error de validación o ID no proporcionado"
           },
           "401": {
             "description": "No autorizado"
           },
           "403": {
-            "description": "Rol insuficiente"
+            "description": "Rol insuficiente - Solo ADMIN y VET"
+          },
+          "404": {
+            "description": "Tratamiento no encontrado"
           },
           "500": {
             "description": "Internal Server Error"
@@ -987,7 +1016,7 @@
         "tags": [
           "Treatments"
         ],
-        "description": "Eliminar un tratamiento",
+        "description": "Eliminar un tratamiento <br><b>Roles permitidos:</b> ADMIN, VET",
         "parameters": [
           {
             "name": "id",
@@ -998,11 +1027,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Tratamiento eliminado exitosamente"
-          },
           "204": {
-            "description": "No Content"
+            "description": "Tratamiento eliminado exitosamente"
           },
           "400": {
             "description": "ID de tratamiento no proporcionado"
@@ -1011,7 +1037,10 @@
             "description": "No autorizado"
           },
           "403": {
-            "description": "Rol insuficiente"
+            "description": "Rol insuficiente - Solo ADMIN y VET"
+          },
+          "404": {
+            "description": "Tratamiento no encontrado"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1203,7 +1232,7 @@
         "tags": [
           "Vets"
         ],
-        "description": "Crear un nuevo veterinario",
+        "description": "Crear un nuevo veterinario <br><b>Roles permitidos:</b> ADMIN",
         "parameters": [
           {
             "name": "body",
@@ -1253,7 +1282,7 @@
         "tags": [
           "Vets"
         ],
-        "description": "Obtener todos los veterinarios",
+        "description": "Obtener todos los veterinarios <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST, VET",
         "responses": {
           "200": {
             "description": "Lista de veterinarios obtenida exitosamente",
@@ -1315,7 +1344,7 @@
         "tags": [
           "Vets"
         ],
-        "description": "Obtener un veterinario por ID",
+        "description": "Obtener un veterinario por ID <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST, VET",
         "parameters": [
           {
             "name": "id",
@@ -1387,7 +1416,7 @@
         "tags": [
           "Vets"
         ],
-        "description": "Actualizar un veterinario",
+        "description": "Actualizar un veterinario <br><b>Roles permitidos:</b> ADMIN",
         "parameters": [
           {
             "name": "id",
@@ -1447,7 +1476,7 @@
         "tags": [
           "Vets"
         ],
-        "description": "Eliminar un veterinario",
+        "description": "Eliminar un veterinario <br><b>Roles permitidos:</b> ADMIN",
         "parameters": [
           {
             "name": "id",
@@ -1489,7 +1518,7 @@
         "tags": [
           "Vaccines"
         ],
-        "description": "Crear una nueva vacuna (registro de aplicación)",
+        "description": "Crear una nueva vacuna (registro de aplicación) <br><b>Roles permitidos:</b> ADMIN, VET",
         "parameters": [
           {
             "name": "body",
@@ -1546,7 +1575,7 @@
         "tags": [
           "Vaccines"
         ],
-        "description": "Obtener todas las vacunas (aplicaciones)",
+        "description": "Obtener todas las vacunas (aplicaciones) <br><b>Roles permitidos:</b> ADMIN, VET, RECEPTIONIST",
         "parameters": [
           {
             "name": "petId",
@@ -1615,7 +1644,7 @@
         "tags": [
           "Vaccines"
         ],
-        "description": "Obtener una vacuna por ID",
+        "description": "Obtener una vacuna por ID <br><b>Roles permitidos:</b> ADMIN, VET, RECEPTIONIST",
         "parameters": [
           {
             "name": "id",
@@ -1687,7 +1716,7 @@
         "tags": [
           "Vaccines"
         ],
-        "description": "Actualizar una vacuna (campos opcionales)",
+        "description": "Actualizar una vacuna (campos opcionales) <br><b>Roles permitidos:</b> ADMIN, VET",
         "parameters": [
           {
             "name": "id",
@@ -1747,7 +1776,7 @@
         "tags": [
           "Vaccines"
         ],
-        "description": "Eliminar una vacuna",
+        "description": "Eliminar una vacuna <br><b>Roles permitidos:</b> ADMIN",
         "parameters": [
           {
             "name": "id",
@@ -1789,7 +1818,7 @@
         "tags": [
           "Stats"
         ],
-        "description": "Obtener estadísticas del dashboard",
+        "description": "Obtener estadísticas del dashboard <br><b>Roles permitidos:</b> ADMIN, VET",
         "responses": {
           "200": {
             "description": "Estadísticas del dashboard",
@@ -1797,6 +1826,53 @@
               "type": "object",
               "properties": {
                 "appointmentsToday": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "appointment123"
+                      },
+                      "date": {
+                        "type": "string",
+                        "example": "2024-11-25T10:00:00.000Z"
+                      },
+                      "status": {
+                        "type": "string",
+                        "example": "SCHEDULED"
+                      },
+                      "pet": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Firulais"
+                          },
+                          "owner": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Juan Pérez"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "vet": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Dr. García"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "appointmentsTodayCount": {
                   "type": "number",
                   "example": 5
                 },
@@ -1815,11 +1891,20 @@
                       },
                       "name": {
                         "type": "string",
-                        "example": "Vacuna A"
+                        "example": "Rabia"
                       },
                       "nextDose": {
                         "type": "string",
                         "example": "2025-12-01T00:00:00.000Z"
+                      },
+                      "pet": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Firulais"
+                          }
+                        }
                       }
                     }
                   }
@@ -1831,10 +1916,10 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "No autorizado"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Rol insuficiente"
           },
           "500": {
             "description": "Internal Server Error"

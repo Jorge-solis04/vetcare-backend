@@ -16,7 +16,7 @@ router.post(
   '/',
   /*
     #swagger.tags = ['Vaccines']
-    #swagger.description = 'Crear una nueva vacuna (registro de aplicación)'
+    #swagger.description = 'Crear una nueva vacuna (registro de aplicación) <br><b>Roles permitidos:</b> ADMIN, VET'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['body'] = {
       in: 'body',
@@ -43,7 +43,7 @@ router.get(
   '/',
   /*
     #swagger.tags = ['Vaccines']
-    #swagger.description = 'Obtener todas las vacunas (aplicaciones)'
+    #swagger.description = 'Obtener todas las vacunas (aplicaciones) <br><b>Roles permitidos:</b> ADMIN, VET, RECEPTIONIST'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.responses[200] = {
       description: 'Lista de vacunas obtenida exitosamente',
@@ -66,7 +66,7 @@ router.get(
   '/:id',
   /*
     #swagger.tags = ['Vaccines']
-    #swagger.description = 'Obtener una vacuna por ID'
+    #swagger.description = 'Obtener una vacuna por ID <br><b>Roles permitidos:</b> ADMIN, VET, RECEPTIONIST'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = { in: 'path', description: 'ID de la vacuna', required: true, type: 'string' }
     #swagger.responses[200] = {
@@ -90,7 +90,7 @@ router.put(
   '/:id',
   /*
     #swagger.tags = ['Vaccines']
-    #swagger.description = 'Actualizar una vacuna (campos opcionales)'
+    #swagger.description = 'Actualizar una vacuna (campos opcionales) <br><b>Roles permitidos:</b> ADMIN, VET'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = { in: 'path', description: 'ID de la vacuna', required: true, type: 'string' }
     #swagger.parameters['body'] = {
@@ -109,7 +109,7 @@ router.delete(
   '/:id',
   /*
     #swagger.tags = ['Vaccines']
-    #swagger.description = 'Eliminar una vacuna'
+    #swagger.description = 'Eliminar una vacuna <br><b>Roles permitidos:</b> ADMIN'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = { in: 'path', description: 'ID de la vacuna', required: true, type: 'string' }
     #swagger.responses[200] = { description: 'Vacuna eliminada exitosamente' }

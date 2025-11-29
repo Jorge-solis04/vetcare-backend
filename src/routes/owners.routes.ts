@@ -14,7 +14,7 @@ const router = Router();
 router.post('/',
   /* 
     #swagger.tags = ['Owners']
-    #swagger.description = 'Crear un nuevo propietario'
+    #swagger.description = 'Crear un nuevo propietario <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['body'] = {
       in: 'body',
@@ -47,7 +47,7 @@ router.post('/',
 router.get('/',
   /* 
     #swagger.tags = ['Owners']
-    #swagger.description = 'Obtener todos los propietarios'
+    #swagger.description = 'Obtener todos los propietarios <br><b>Roles permitidos:</b> Todos los usuarios autenticados'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.responses[200] = {
       description: 'Lista de propietarios obtenida exitosamente',
@@ -71,7 +71,7 @@ router.get('/',
 router.get('/:id',
   /* 
     #swagger.tags = ['Owners']
-    #swagger.description = 'Obtener un propietario por ID'
+    #swagger.description = 'Obtener un propietario por ID <br><b>Roles permitidos:</b> Todos los usuarios autenticados'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -104,7 +104,7 @@ router.get('/:id',
 router.put('/:id',
   /* 
     #swagger.tags = ['Owners']
-    #swagger.description = 'Actualizar un propietario'
+    #swagger.description = 'Actualizar un propietario <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -146,7 +146,7 @@ router.put('/:id',
 router.delete('/:id',
   /* 
     #swagger.tags = ['Owners']
-    #swagger.description = 'Eliminar un propietario'
+    #swagger.description = 'Eliminar un propietario <br><b>Roles permitidos:</b> ADMIN'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',

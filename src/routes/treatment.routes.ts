@@ -15,7 +15,7 @@ router.use(authMiddleware);
 router.get('/pet/:petId',
   /* 
     #swagger.tags = ['Treatments']
-    #swagger.description = 'Obtener todos los tratamientos de una mascota'
+    #swagger.description = 'Obtener todos los tratamientos de una mascota <br><b>Roles permitidos:</b> ADMIN, VET, RECEPTIONIST'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['petId'] = {
       in: 'path',
@@ -52,7 +52,7 @@ router.get('/pet/:petId',
 router.post('/',
   /* 
     #swagger.tags = ['Treatments']
-    #swagger.description = 'Crear un nuevo tratamiento'
+    #swagger.description = 'Crear un nuevo tratamiento <br><b>Roles permitidos:</b> ADMIN, VET'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['body'] = {
       in: 'body',
@@ -85,7 +85,7 @@ router.post('/',
 router.put('/:id',
   /* 
     #swagger.tags = ['Treatments']
-    #swagger.description = 'Actualizar un tratamiento'
+    #swagger.description = 'Actualizar un tratamiento <br><b>Roles permitidos:</b> ADMIN, VET'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -95,19 +95,28 @@ router.put('/:id',
     }
     #swagger.parameters['body'] = {
       in: 'body',
-      description: 'Datos a actualizar'
+      description: 'Datos a actualizar (todos opcionales)',
+      required: true,
+      schema: {
+        description: 'Tratamiento antibiótico por infección',
+        start: '2024-01-01',
+        end: '2024-01-15'
+      }
     }
     #swagger.responses[200] = {
       description: 'Tratamiento actualizado exitosamente'
     }
     #swagger.responses[400] = {
-      description: 'ID de tratamiento no proporcionado'
+      description: 'Error de validación o ID no proporcionado'
+    }
+    #swagger.responses[404] = {
+      description: 'Tratamiento no encontrado'
     }
     #swagger.responses[401] = {
       description: 'No autorizado'
     }
     #swagger.responses[403] = {
-      description: 'Rol insuficiente'
+      description: 'Rol insuficiente - Solo ADMIN y VET'
     }
   */
   authorizeRole([Role.ADMIN, Role.VET]), 
@@ -115,8 +124,9 @@ router.put('/:id',
 );
 
 router.delete('/:id',
-    /*  #swagger.tags = ['Treatments']
-    #swagger.description = 'Eliminar un tratamiento'
+  /* 
+    #swagger.tags = ['Treatments']
+    #swagger.description = 'Eliminar un tratamiento <br><b>Roles permitidos:</b> ADMIN, VET'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -124,20 +134,24 @@ router.delete('/:id',
       required: true,
       type: 'string'
     }
-    #swagger.responses[200] = {
+    #swagger.responses[204] = {
       description: 'Tratamiento eliminado exitosamente'
     }
     #swagger.responses[400] = {
       description: 'ID de tratamiento no proporcionado'
     }
+    #swagger.responses[404] = {
+      description: 'Tratamiento no encontrado'
+    }
     #swagger.responses[401] = {
       description: 'No autorizado'
     }
     #swagger.responses[403] = {
-      description: 'Rol insuficiente'
+      description: 'Rol insuficiente - Solo ADMIN y VET'
     }
   */
-    
-    authorizeRole([Role.ADMIN, Role.VET]), deleteTreatmentHandler);
+  authorizeRole([Role.ADMIN, Role.VET]), 
+  deleteTreatmentHandler
+);
 
 export default router;

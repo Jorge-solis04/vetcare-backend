@@ -62,7 +62,7 @@ router.put('/:id',
     #swagger.description = 'Actualizar una cita'
     #swagger.security = [{ "bearerAuth": [] }]
   */
-  authorizeRole([Role.ADMIN, Role.RECEPTIONIST, Role.VET]),
+  authorizeRole([Role.ADMIN, Role.RECEPTIONIST]),
   updateAppointmentHandler
 );
 

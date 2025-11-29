@@ -15,7 +15,7 @@ const router = Router();
 router.post('/',
   /* 
     #swagger.tags = ['Vets']
-    #swagger.description = 'Crear un nuevo veterinario'
+    #swagger.description = 'Crear un nuevo veterinario <br><b>Roles permitidos:</b> ADMIN'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['body'] = {
       in: 'body',
@@ -48,7 +48,7 @@ router.post('/',
 router.get('/',
   /* 
     #swagger.tags = ['Vets']
-    #swagger.description = 'Obtener todos los veterinarios'
+    #swagger.description = 'Obtener todos los veterinarios <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST, VET'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.responses[200] = {
       description: 'Lista de veterinarios obtenida exitosamente',
@@ -73,7 +73,7 @@ router.get('/',
 router.get('/:id',
   /* 
     #swagger.tags = ['Vets']
-    #swagger.description = 'Obtener un veterinario por ID'
+    #swagger.description = 'Obtener un veterinario por ID <br><b>Roles permitidos:</b> ADMIN, RECEPTIONIST, VET'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -107,7 +107,7 @@ router.get('/:id',
 router.put('/:id',
   /* 
     #swagger.tags = ['Vets']
-    #swagger.description = 'Actualizar un veterinario'
+    #swagger.description = 'Actualizar un veterinario <br><b>Roles permitidos:</b> ADMIN'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',
@@ -149,7 +149,7 @@ router.put('/:id',
 router.delete('/:id',
   /* 
     #swagger.tags = ['Vets']
-    #swagger.description = 'Eliminar un veterinario'
+    #swagger.description = 'Eliminar un veterinario <br><b>Roles permitidos:</b> ADMIN'
     #swagger.security = [{ "bearerAuth": [] }]
     #swagger.parameters['id'] = {
       in: 'path',

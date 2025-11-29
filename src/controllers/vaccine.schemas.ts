@@ -30,7 +30,6 @@ export const createVaccineSchema = z.object({
   return true;
 }, {
   message: "La fecha de la próxima dosis debe ser posterior a la fecha de aplicación",
-  path: ["nextDose"], 
 });
 
 export const updateVaccineSchema = z.object({
