@@ -25,6 +25,9 @@ export const getPetById = async (id: string) => {
       },
       treatments: {
         orderBy: { start: 'desc' } // Opcional: Ordenar tratamientos por fecha
+      },
+      vaccines:{
+        orderBy: { appliedDate: 'desc' } // Opcional: Ordenar vacunas por fecha
       }
     },
   });
