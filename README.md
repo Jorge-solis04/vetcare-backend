@@ -200,12 +200,13 @@ Se incluye una colección completa de Postman para probar todos los endpoints de
 
 * **Ubicación:** `/docs/VetCare_API.postman_collection.json`
 * **Contenido:**
-
-## Documentacion de API swagger
-Se incluyen los ejemplos de los endpoit desde `http://localhost:4000/api/docs/`. Antes de hacerlo, ejecute el comando `npm run swagger`
-    * Auth (Login/Register)
+* * Auth (Login/Register)
     * Gestión de Mascotas y Dueños
     * Agenda de Citas
     * Historial Médico (Tratamientos)
 
 > **Nota:** La colección está configurada para usar variables de entorno. Al hacer login, el token se guarda automáticamente para las siguientes peticiones.
+
+## Documentacion de API swagger
+Se incluyen los ejemplos de los endpoit desde `http://localhost:4000/api/docs/`. Antes de hacerlo, ejecute el comando `npm run swagger`
+    
