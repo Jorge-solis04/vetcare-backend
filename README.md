@@ -1,92 +1,211 @@
-# VetCare System - Backend
+# 🐾 VetCare System - Backend API
 
-Este repositorio contiene el backend para el **Sistema de Gestión de Clínicas Veterinarias (VetCare System)**. Esta API RESTful está construida con Node.js, Express, TypeScript y Prisma, y se encarga de gestionar toda la lógica de negocio, la base de datos y la autenticación.
+> API RESTful robusta y escalable para la gestión administrativa y clínica de centros veterinarios.
 
-## Tecnologías Utilizadas
-
-* **Node.js**: Entorno de ejecución de JavaScript.
-* **Express**: Framework de servidor web para Node.js.
-* **TypeScript**: Superset de JavaScript que añade tipado estático.
-* **Prisma ORM**: ORM de "siguiente generación" para Node.js y TypeScript.
-* **MySQL**: Base de datos relacional.
-* **JSON Web Tokens (JWT)**: Para autenticación y protección de rutas.
-* **Zod**: Para validación de esquemas y datos de entrada.
-* **Bcrypt.js**: Para hashing (encriptación) de contraseñas.
-* **ts-node-dev**: Para recarga automática del servidor en desarrollo.
+Este repositorio contiene el código fuente del servidor (Backend) del sistema **VetCare**. Ha sido construido siguiendo una arquitectura en capas, priorizando la integridad de datos, la seguridad mediante tipos estrictos y un rendimiento óptimo.
 
 ---
 
-## Configuración del Entorno de Desarrollo
+## 🛠 Tecnologías y Stack
 
-Sigue estos pasos para levantar el proyecto en tu máquina local.
+El núcleo del servidor ha sido desarrollado utilizando un stack moderno basado en Node.js y TypeScript:
 
-### 1. Prerrequisitos
+* **Runtime:** [Node.js](https://nodejs.org/) (Entorno de ejecución asíncrono).
+* **Framework:** Express.js (Servidor web minimalista y flexible).
+* **Lenguaje:** TypeScript (Strict mode) para un desarrollo seguro y mantenible.
+* **ORM:** [Prisma](https://www.prisma.io/) (Manejo de base de datos tipo-seguro y migraciones).
+* **Base de Datos:** MySQL (Relacional).
+* **Validación:** [Zod](https://zod.dev/) (Validación de esquemas y parseo de datos de entrada).
+* **Seguridad:** JWT (JSON Web Tokens) + Bcrypt (Hashing de contraseñas).
 
-* **Node.js** (v18 o superior).
-* **NPM** (incluido con Node.js).
-* **MAMP** (o cualquier servidor MySQL local). Este proyecto está pre-configurado con las credenciales por defecto de MAMP.
-* Un cliente de API como **Postman** o **Thunder Client** (VS Code) para probar los endpoints.
+---
 
-### 2. Instalación
+## 🚀 Guía de Instalación y Despliegue
 
-1.  Clona el repositorio:
-    ```bash
-    git clone [https://github.com/tu-usuario/vetcare-backend.git](https://github.com/tu-usuario/vetcare-backend.git)
-    ```
+Sigue estos pasos para levantar el servidor y la base de datos en tu entorno local.
 
-2.  Navega a la carpeta del proyecto:
-    ```bash
-    cd vetcare-backend
-    ```
+### Prerrequisitos
+* Node.js (v18 o superior)
+* Servidor MySQL corriendo (XAMPP, MAMP, Docker o nativo)
+* Postman (Opcional, para pruebas)
 
-3.  Instala todas las dependencias:
-    ```bash
-    npm install
-    ```
+### 1. Clonar el repositorio
+```bash
+git clone [https://github.com/tu-usuario/vetcare-backend.git](https://github.com/tu-usuario/vetcare-backend.git)
+cd vetcare-backend
+```
 
-### 3. Configuración de la Base de Datos (con MAMP)
+### 2. Instalar dependencias
+```bash
+npm install
+```
 
-1.  **Inicia MAMP** y asegúrate de que el servidor MySQL esté corriendo.
-2.  Abre la herramienta **phpMyAdmin** desde el panel de MAMP.
-3.  Crea una nueva base de datos:
-    * Nombre de la base de datos: `vetcare_db`
-    * Cotejamiento: `utf8mb4_general_ci` (recomendado)
+### 3. Configuración de Entorno
+Crea un archivo `.env` en la raíz del proyecto basándote en el siguiente ejemplo. Asegúrate de que las credenciales de MySQL coincidan con tu sistema.
 
-### 4. Variables de Entorno
+```env
+# .env
+PORT=4000
+DATABASE_URL="mysql://root:root@localhost:8889/vetcare_db"
+JWT_SECRET="tu_secreto_super_seguro_para_firmar_tokens"
+```
 
-Este proyecto usa un archivo `.env` para manejar las variables de entorno.
-
-1.  Crea un archivo llamado `.env` en la raíz del proyecto.
-2.  Copia y pega el siguiente contenido. Estas son las credenciales *por defecto* de MAMP:
-
-    ```env
-    # URL de conexión a la Base de Datos (MAMP usa 'root'/'root' y el puerto 8889 por defecto)
-    DATABASE_URL="mysql://root:root@localhost:8889/vetcare_db"
-
-    # Puerto en el que correrá el servidor de Node
-    PORT=4000
-
-    # Secreto para firmar los JSON Web Tokens
-    JWT_SECRET="un-secreto-muy-fuerte-y-dificil-de-adivinar-12345"
-    ```
-    > **Nota:** Si tu MAMP usa un puerto diferente para MySQL (como `3306`), ajústalo en la `DATABASE_URL`.
-
-### 5. Sincronizar la Base de Datos
-
-Una vez configurado el `.env`, corre el siguiente comando para que Prisma cree todas las tablas y relaciones en tu base de datos `vetcare_db`:
+### 4. Migración de Base de Datos
+Ejecuta el siguiente comando para que Prisma cree las tablas y relaciones en tu MySQL:
 
 ```bash
-npx prisma migrate dev
+npx prisma migrate dev --name init
 ```
 
-### 6. Ejecucion del proyecto
-Para iniciar el servidor en modo de desarrollo (con recarga automática), usa:
-```Bash
+### 5. Ejecutar servidor de desarrollo
+```bash
 npm run dev
 ```
+_El servidor iniciará en `http://localhost:4000`_
 
-### 7. Documentacion de los endpoints 
-Una vez ejecutado el proyecto, puedes acceder a la documentacion de los endpoints con swagger
-```Ruta
-http://localhost:4000/api/docs/
+---
+
+## 🏗 Arquitectura del Backend
+
+El backend sigue una **Arquitectura en Capas (Layered Architecture)**, separando claramente las responsabilidades para facilitar el mantenimiento y las pruebas.
+
+### Diagrama de Arquitectura
+```mermaid
+flowchart TD
+    Client(("Cliente / Frontend")) -->|HTTP Request| Router["Router (Express)"]
+    
+    subgraph Backend ["VetCare API Server"]
+        Router -->|Intercepta| Middleware["Middleware (Auth & Roles)"]
+        Middleware -->|Pasa control| Controller["Controllers (Manejo HTTP)"]
+        
+        Controller -->|Valida datos| Zod["Zod Schemas"]
+        Controller -->|Llama| Service["Services (Lógica de Negocio)"]
+        
+        Service -->|Consulta| Prisma["Prisma Client (ORM)"]
+    end
+    
+    Prisma <-->|SQL| DB[("MySQL Database")]
 ```
+
+### Estructura de Directorios
+Organización modular del código fuente (`src/`):
+
+```
+vetcare-backend/
+├── src/
+│   ├── config/           # Variables de entorno y configuraciones globales
+│   ├── controllers/      # Controladores: Reciben Request -> Envían Response
+│   │   ├── auth.controller.ts
+│   │   ├── pet.controller.ts
+│   │   └── ...
+│   ├── middleware/       # Middlewares: Auth (JWT) y Verificación de Roles
+│   ├── prisma/           # Instancia única del cliente Prisma
+│   ├── routes/           # Definición de endpoints y aplicación de middlewares
+│   ├── services/         # Lógica de negocio pura y consultas a BD
+│   ├── utils/            # Funciones auxiliares
+│   └── app.ts            # Punto de entrada de la aplicación
+├── prisma/
+│   ├── migrations/       # Historial de cambios SQL (.sql)
+│   └── schema.prisma     # Modelado de datos (La fuente de la verdad)
+├── .env                  # Variables sensibles
+└── package.json
+```
+
+---
+
+## 📊 Modelo de Datos (Entity-Relationship)
+
+El sistema utiliza una base de datos relacional robusta. A continuación se muestra el diagrama ER de las entidades principales.
+
+```mermaid
+erDiagram
+    User {
+        string id PK
+        string email
+        string password
+        enum role "ADMIN, VET, RECEPTIONIST"
+    }
+    Owner ||--|{ Pet : "posee"
+    Owner {
+        string id PK
+        string name
+        string email
+        string phone
+    }
+    Pet ||--o{ Appointment : "asiste"
+    Pet ||--o{ Treatment : "recibe"
+    Pet {
+        string id PK
+        string name
+        string species
+        string ownerId FK
+    }
+    Vet ||--o{ Appointment : "atiende"
+    Vet {
+        string id PK
+        string name
+        string specialty
+    }
+    Appointment {
+        string id PK
+        datetime date
+        enum status "SCHEDULED, COMPLETED, CANCELLED"
+    }
+```
+
+---
+
+## 🔐 Seguridad y Autenticación
+
+El sistema implementa un flujo seguro basado en estándares de la industria.
+
+1.  **Encriptación:** Las contraseñas se almacenan hasheadas utilizando `bcrypt`.
+2.  **Tokens:** Se utiliza JWT (JSON Web Tokens) para sesiones stateless.
+3.  **RBAC:** Control de Acceso Basado en Roles (Admin, Vet, Recepcionista).
+
+### Diagrama de Secuencia: Login y Petición Protegida
+
+```mermaid
+sequenceDiagram
+    participant Client as Cliente
+    participant API as API Routes
+    participant Auth as Auth Middleware
+    participant Controller as Controller
+
+    %% Login Flow
+    Note over Client, Controller: Flujo de Inicio de Sesión
+    Client->>API: POST /api/auth/login
+    API->>Controller: Valida credenciales (Bcrypt)
+    Controller-->>Client: Retorna Token JWT
+
+    %% Protected Route Flow
+    Note over Client, Controller: Flujo de Ruta Protegida
+    Client->>API: GET /api/pets (Header: Bearer Token)
+    API->>Auth: Intercepta Petición
+    Auth->>Auth: Verifica Firma y Expiración
+    
+    alt Token Válido
+        Auth->>Controller: Pasa control (req.user)
+        Controller-->>Client: Respuesta JSON (200 OK)
+    else Token Inválido
+        Auth-->>Client: Error 401 Unauthorized
+    end
+```
+
+---
+
+## 📦 Documentación de API (Postman)
+
+Se incluye una colección completa de Postman para probar todos los endpoints del sistema.
+
+* **Ubicación:** `/docs/VetCare_API.postman_collection.json`
+* **Contenido:**
+
+## Documentacion de API swagger
+Se incluyen los ejemplos de los endpoit desde `http://localhost:4000/api/docs/`. Antes de hacerlo, ejecute el comando `npm run swagger`
+    * Auth (Login/Register)
+    * Gestión de Mascotas y Dueños
+    * Agenda de Citas
+    * Historial Médico (Tratamientos)
+
+> **Nota:** La colección está configurada para usar variables de entorno. Al hacer login, el token se guarda automáticamente para las siguientes peticiones.
