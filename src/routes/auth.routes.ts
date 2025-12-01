@@ -31,6 +31,8 @@ router.post(
       description: 'Usuario registrado exitosamente'
     }
   */
+  authMiddleware,
+  authorizeRole([Role.ADMIN]),
   registerHandler
 );
 

@@ -1,0 +1,944 @@
+{
+	"info": {
+		"_postman_id": "85f2c70d-9b52-4bba-8a8d-d9c79049500d",
+		"name": "Vetcare",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34558145",
+		"_collection_link": "https://red-shadow-595758.postman.co/workspace/My-Workspace~210fbd99-f7bc-451b-80cb-aad3272469f7/collection/34558145-85f2c70d-9b52-4bba-8a8d-d9c79049500d?action=share&source=collection_link&creator=34558145"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Verificar que el login fue exitoso (Status 200)\r",
+									"if (pm.response.code === 200) {\r",
+									"    // 2. Leer la respuesta JSON\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // 3. Guardar el token automáticamente en el entorno\r",
+									"    pm.environment.set(\"token\", jsonData.token);\r",
+									"\r",
+									"    console.log(\"¡Token guardado exitosamente!\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOWVhN2ExLWQ0NjAtNDM1MS1hYzMzLTMyOGViOWI5YjI5YSIsImVtYWlsIjoiam9yZ2Vzb2xpc0B2ZXRjYXJlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2Mzk1OTc1MCwiZXhwIjoxNzYzOTYzMzUwfQ.x6h3f1KeNSdIqkMrZobSNIzbUMsmZpX5yMHISjpBdqQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@vetcare.com\",\r\n  \"password\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"veterinario\",\r\n  \"email\": \"vet@vetcare.com\",\r\n  \"password\": \"password123\",\r\n  \"role\": \"VET\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk3NGE1ODg0LTk5OTgtNGUyZC1iZTY2LTVjNDU1ZjY0YTVkMSIsImVtYWlsIjoiam9yZ2VAdmV0Y2FyZS5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NjM0Mzg2NDEsImV4cCI6MTc2MzQ0MjI0MX0.PpyPNJpvihoe4UCvI2g4YPfoRFDngqFlKCdUCO9mF-4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/auth/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Owner",
+			"item": [
+				{
+					"name": "Obtener dueños",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/owners",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"owners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Dueño",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Montserrat Garcia\",\r\n  \"phone\": \"1234567890\",\r\n  \"email\": \"mon@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/owners",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"owners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk3NGE1ODg0LTk5OTgtNGUyZC1iZTY2LTVjNDU1ZjY0YTVkMSIsImVtYWlsIjoiam9yZ2VAdmV0Y2FyZS5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NjM0Mzk2MjAsImV4cCI6MTc2MzQ0MzIyMH0.syTiq70f26edauaoiCYix6cHMfgEON_q-i-b_GE9hSc",
+								"type": "text"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.39.1",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/owners/{id}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"owners",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk3NGE1ODg0LTk5OTgtNGUyZC1iZTY2LTVjNDU1ZjY0YTVkMSIsImVtYWlsIjoiam9yZ2VAdmV0Y2FyZS5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NjM0Mzk2MjAsImV4cCI6MTc2MzQ0MzIyMH0.syTiq70f26edauaoiCYix6cHMfgEON_q-i-b_GE9hSc",
+								"type": "text"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.39.1",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/owners/{id}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"owners",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk3NGE1ODg0LTk5OTgtNGUyZC1iZTY2LTVjNDU1ZjY0YTVkMSIsImVtYWlsIjoiam9yZ2VAdmV0Y2FyZS5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NjM0Mzk2MjAsImV4cCI6MTc2MzQ0MzIyMH0.syTiq70f26edauaoiCYix6cHMfgEON_q-i-b_GE9hSc",
+								"type": "text"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache",
+								"type": "text"
+							},
+							{
+								"key": "Postman-Token",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Host",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.39.1",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip, deflate, br",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/owners/{id}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"owners",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "pets",
+			"item": [
+				{
+					"name": "agregarperrito",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"daniel\",\r\n    \"species\": \"Perro\",\r\n    \"breed\": \"Mestizo\",\r\n    \"birthDate\": \"2020-05-20\",\r\n    \"ownerId\": \"15a201bd-9075-4b9e-b552-f912a3c7d2b6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/pets",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verperritos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pets",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actPerrito",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Tuchiiii\",\r\n  \"species\": \"Perro\",\r\n  \"breed\": \"Vibora\",\r\n  \"birthDate\": \"2004-05-28\",\r\n  \"ownerId\": \"3ebef20e-57a8-4029-a5e1-6ba831f2fde2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/pets/id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pets",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pets",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pets"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tratamientos",
+			"item": [
+				{
+					"name": "vertratamientodeperrito",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/treatments/pet/{id}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"treatments",
+								"pet",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "agregarTratamiento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Antibióticos por 7 días cada 8 horas\",\r\n  \"start\": \"2025-11-20\",\r\n  \"end\": \"2025-11-27\",\r\n  \"petId\": \"eecb10ca-f5d2-4f7d-8493-ec39651d483d\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/treatments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"treatments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "agregarTratamiento Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/treatments/id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"treatments",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actTratamiento",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/treatments/id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"treatments",
+								"id"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "appointments",
+			"item": [
+				{
+					"name": "agregarCita",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2025-11-25T10:00:00\",\r\n  \"petId\": \"0b4e1035-c614-4290-bd2a-285c8d06993d\",\r\n  \"vetId\": \"d54e8233-c8a2-11f0-8fd5-d8bbc1f56b46\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/appointments/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appointments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verCitas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/appointments/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appointments",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "f3dcba24-a0f9-439d-ba1f-02f1155cd698",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarcita",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2025-12-25T10:00:00\",\r\n  \"petId\": \"eecb10ca-f5d2-4f7d-8493-ec39651d483d\",\r\n  \"vetId\": \"d54e8233-c8a2-11f0-8fd5-d8bbc1f56b46\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/appointments/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appointments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCita",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2025-12-25T10:00:00\",\r\n  \"petId\": \"eecb10ca-f5d2-4f7d-8493-ec39651d483d\",\r\n  \"vetId\": \"d54e8233-c8a2-11f0-8fd5-d8bbc1f56b46\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/appointments/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"appointments",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "stats",
+			"item": [
+				{
+					"name": "dashbaord",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/stats/dashboard",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"stats",
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vets",
+			"item": [
+				{
+					"name": "vets",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vets",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vets",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vetsByid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vets/id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vets",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vetsByid",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pets/id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pets",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vets",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vets/id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vets",
+								"id"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vaccine",
+			"item": [
+				{
+					"name": "vaccine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vaccines",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vaccines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vaccines",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vaccines",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vaccines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vaccineByid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vaccines",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vaccines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vaccine",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vaccines",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vaccines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/vaccines",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"vaccines"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
